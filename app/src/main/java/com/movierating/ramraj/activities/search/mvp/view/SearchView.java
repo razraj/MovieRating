@@ -3,6 +3,8 @@ package com.movierating.ramraj.activities.search.mvp.view;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,8 +32,8 @@ public class SearchView extends CoreActivityView {
     @BindView(R.id.autoCompleteTextView)
     AutoCompleteTextView autocompleteView;
 
-    @BindView(R.id.listview)
-    ListView listView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     public SearchView(AppCompatActivity activity) {
         super(activity);
@@ -41,6 +43,11 @@ public class SearchView extends CoreActivityView {
         progressDialog = new ProgressDialog(getContext());
 
         progressDialog.setTitle("loading");
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
+        recyclerView.setLayoutManager(layoutManager);
 
     }
 
@@ -56,7 +63,7 @@ public class SearchView extends CoreActivityView {
         if (searchMoviesAdapter == null)
             searchMoviesAdapter = new SearchMoviesAdapter(getContext(), searchDO.movies());
         else searchMoviesAdapter.updateData(searchDO.movies());
-        listView.setAdapter(searchMoviesAdapter);
+        recyclerView.setAdapter(searchMoviesAdapter);
     }
 
     public void showLoading(Boolean loading) {

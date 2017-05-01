@@ -3,26 +3,34 @@ package com.movierating.ramraj.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.movierating.ramraj.activities.search.mvp.view.SearchItemView;
+import com.movierating.ramraj.R;
 import com.movierating.ramraj.app.network.model.Search;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ramraj on 4/24/17.
  */
 
-public class SearchMoviesAdapter extends BaseAdapter {
+public class SearchMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private Context context;
     private List<Search> searchList = new ArrayList<>();
 
     public SearchMoviesAdapter(Context context, List<Search> searchList) {
-//        super(context, 0, searchList);
+        this.context = context;
         this.searchList = searchList;
     }
 
@@ -35,13 +43,19 @@ public class SearchMoviesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return searchList.size() > 0 ? searchList.size() : 0;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.search_list_item_view, parent, false);
+        return new SearchItemViewHolder(view);
+
     }
 
     @Override
-    public Object getItem(int position) {
-        return searchList.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        bind((SearchItemViewHolder) holder, position);
+    }
+
+    private void bind(final SearchItemViewHolder holder, final int position) {
+        holder.movieTitle.setText(searchList.get(position).title());
     }
 
     @Override
@@ -49,21 +63,22 @@ public class SearchMoviesAdapter extends BaseAdapter {
         return position;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        SearchItemView listItem;
+    public int getItemCount() {
+        return searchList.size() > 0 ? searchList.size() : 0;
+    }
 
-        if (convertView == null) {
-            listItem = new SearchItemView(parent.getContext());
-        } else {
-            listItem = SearchItemView.class.cast(convertView);
+    static class SearchItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.movie_image)
+        ImageView movieImage;
+
+        @BindView(R.id.movie_name)
+        TextView movieTitle;
+
+        public SearchItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
-        listItem.bind(searchList.get(position));
-
-
-        return listItem;
-
     }
 
 }
