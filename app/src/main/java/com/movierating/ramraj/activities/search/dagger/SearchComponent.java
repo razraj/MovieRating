@@ -9,7 +9,7 @@ import dagger.Component;
  * Created by ramraj on 4/19/17.
  */
 @SearchScope
-@Component(modules = SearchModule.class,dependencies = AppComponent.class)
+@Component(modules = {SearchModule.class,SearchActivityModule.class},dependencies = AppComponent.class)
 public interface SearchComponent {
     void inject(SearchActivity activity);
 }

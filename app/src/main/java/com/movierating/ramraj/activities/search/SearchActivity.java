@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.movierating.ramraj.activities.search.dagger.DaggerSearchComponent;
+import com.movierating.ramraj.activities.search.dagger.SearchActivityModule;
 import com.movierating.ramraj.activities.search.dagger.SearchModule;
 import com.movierating.ramraj.activities.search.mvp.SearchPresenter;
 import com.movierating.ramraj.activities.search.mvp.view.SearchView;
@@ -28,7 +29,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         DaggerSearchComponent.builder()
                 .appComponent(CoreApplication.get(this).component())
-                .searchModule(new SearchModule(this))
+                .searchActivityModule(new SearchActivityModule(this))
                 .build().inject(this);
 
         setContentView(view);
