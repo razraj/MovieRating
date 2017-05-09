@@ -13,9 +13,13 @@ import android.widget.TextView;
 
 import com.movierating.ramraj.R;
 import com.movierating.ramraj.app.network.model.Search;
+import com.movierating.ramraj.ext.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +32,9 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context context;
     private List<Search> searchList = new ArrayList<>();
+
+    @Inject
+    Picasso picasso;
 
     public SearchMoviesAdapter(Context context, List<Search> searchList) {
         this.context = context;
@@ -56,6 +63,7 @@ public class SearchMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void bind(final SearchItemViewHolder holder, final int position) {
         holder.movieTitle.setText(searchList.get(position).title());
+        picasso.with(context).load(Constants.BASE_IMAGE_URL+searchList.get(position).posterPath()).into(holder.movieImage);
     }
 
     @Override
