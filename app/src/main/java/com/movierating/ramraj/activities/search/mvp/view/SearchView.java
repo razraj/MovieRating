@@ -11,10 +11,16 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.movierating.ramraj.R;
+import com.movierating.ramraj.activities.search.dagger.DaggerSearchViewComponent;
+import com.movierating.ramraj.activities.search.dagger.SearchActivityModule;
 import com.movierating.ramraj.adapter.SearchMoviesAdapter;
+import com.movierating.ramraj.app.CoreApplication;
 import com.movierating.ramraj.app.network.model.SearchDO;
 import com.movierating.ramraj.core.BaseDrawerActivityView;
 import com.movierating.ramraj.core.CoreActivityView;
+import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -27,7 +33,9 @@ public class SearchView extends CoreActivityView {
 
     private static final String TAG = SearchView.class.getSimpleName();
     private ProgressDialog progressDialog;
-    private SearchMoviesAdapter searchMoviesAdapter;
+
+    @Inject
+    SearchMoviesAdapter adapter;
 
     @BindView(R.id.autoCompleteTextView)
     AutoCompleteTextView autocompleteView;
@@ -49,6 +57,10 @@ public class SearchView extends CoreActivityView {
 
         recyclerView.setLayoutManager(layoutManager);
 
+        DaggerSearchViewComponent.builder()
+                .appComponent(CoreApplication.get(activity).component())
+                .searchActivityModule(new SearchActivityModule(activity))
+                .build().inject(this);
     }
 
     public void showToast(String msg) {
@@ -60,10 +72,8 @@ public class SearchView extends CoreActivityView {
     }
 
     public void setAutocompleteListData(SearchDO searchDO) {
-        if (searchMoviesAdapter == null)
-            searchMoviesAdapter = new SearchMoviesAdapter(getContext(), searchDO.movies());
-        else searchMoviesAdapter.updateData(searchDO.movies());
-        recyclerView.setAdapter(searchMoviesAdapter);
+        adapter.updateData(searchDO.movies());
+        recyclerView.setAdapter(adapter);
     }
 
     public void showLoading(Boolean loading) {

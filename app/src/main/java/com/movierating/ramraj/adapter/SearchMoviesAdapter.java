@@ -30,15 +30,15 @@ import butterknife.ButterKnife;
 
 public class SearchMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
-    private List<Search> searchList = new ArrayList<>();
-
     @Inject
     Picasso picasso;
 
-    public SearchMoviesAdapter(Context context, List<Search> searchList) {
+    private Context context;
+    private List<Search> searchList = new ArrayList<>();
+
+
+    public SearchMoviesAdapter(Context context) {
         this.context = context;
-        this.searchList = searchList;
     }
 
     public void updateData(List<Search> searchList) {
