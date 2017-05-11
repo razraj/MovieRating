@@ -32,23 +32,28 @@ public class BrowseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
 
     private final Context context;
-    private List<Genres> genresList, originalGenreList = new ArrayList<>();
+    private List<Genres> genresList, originalGenreList;
     private final int cellSize;
 
 
     private boolean lockedAnimations = false;
     private int lastAnimatedItem = -1;
 
-    public BrowseRecyclerAdapter(Context context, List<Genres> genresList) {
+    public BrowseRecyclerAdapter(Context context) {
         this.context = context;
-        this.genresList = genresList;
-        this.originalGenreList = genresList;
+        this.genresList = new ArrayList<>();
+        this.originalGenreList = new ArrayList<>();
         this.cellSize = Utils.getScreenWidth(context) / 2;
     }
 
     public void updateData(List<Genres> genresList) {
-        this.genresList.clear();
-        if (genresList != null && !genresList.isEmpty()) {
+
+        if (this.genresList != null && !this.genresList.isEmpty()) {
+            this.genresList.clear();
+            this.originalGenreList.clear();
+            this.genresList.addAll(genresList);
+            this.originalGenreList.addAll(genresList);
+        } else {
             this.genresList.addAll(genresList);
             this.originalGenreList.addAll(genresList);
         }

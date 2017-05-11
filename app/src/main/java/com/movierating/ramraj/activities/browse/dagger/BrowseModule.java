@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.movierating.ramraj.activities.browse.mvp.BrowseModel;
 import com.movierating.ramraj.activities.browse.mvp.BrowsePresenter;
 import com.movierating.ramraj.activities.browse.mvp.BrowseView;
+import com.movierating.ramraj.adapter.BrowseRecyclerAdapter;
 import com.movierating.ramraj.app.network.CoreNetwork;
 
 import dagger.Module;
